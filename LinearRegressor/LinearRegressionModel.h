@@ -24,24 +24,48 @@ public:
     virtual void SetNumberOfFeatures(unsigned int n);
     virtual void SetNumberOfTrainingSamples(unsigned int n);
     virtual void SetFeatureMatrix(Double_t* externalFeatureMatrix);
-    virtual void SetTargetVector(Double_t* externalTarget);
+    virtual void SetTarget(Double_t *externalTarget);
     virtual void Train();
+
     virtual Double_t GetWeight(unsigned int idx);
     virtual Double_t GetWeightError(unsigned int idx);
 
+    virtual Double_t GetRSquared();
+    virtual Double_t GetAdjustedRSquared();
+
     virtual Double_t CostFunction(Double_t* weights);
     virtual Double_t PredictTrainTarget(Double_t* weights, Double_t* features);
+    virtual Double_t TrainedPredictor(Double_t *features);
+
+    bool kIsTrained;
 
 private:
-    TMinuit* fMinimizer;
-
     unsigned int kNumberOfFeatures;
     unsigned int kNumberOfTrainingSamples;
 
     Double_t* kFeatureMatrix;
-    Double_t* kTargetVector;
-    Double_t* kWeightVector;
-    Double_t* kWeightErrorVector;
+    Double_t* kTarget;
+    Double_t* kWeight;
+    Double_t* kWeightError;
+
+    /*
+     * Model robustness metrics.
+     */
+    Double_t kTargetMean;
+    Double_t kTotalSumOfSquares;
+    Double_t kResidualSumOfSquares;
+    Double_t kRSquared;
+    Double_t kAdjustedRSquared;
+    bool     kIsTargetMeanCalculated;
+    bool     kIsTotalSumOfSquaresCalculated;
+    bool     kIsResidualSumOfSquaresCalculated;
+    bool     kIsRSquaredCalculated;
+    bool     kIsAdjustedRSquaredCalculated;
+    virtual void CalculateMeanTarget();
+    virtual void CalculateTotalSumOfSquares();
+    virtual void CalculateResidualSumOfSquares();
+    virtual void CalculateRSquared();
+    virtual void CalculateAdjustedRSquared();
 };
 
 

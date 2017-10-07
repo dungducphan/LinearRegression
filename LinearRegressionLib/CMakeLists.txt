@@ -1,1 +1,0 @@
-add_library(LinearRegressionLib LinearRegressionModel.cpp LinearRegressionModel.h)
